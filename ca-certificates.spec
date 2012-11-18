@@ -1,6 +1,6 @@
 Summary:	Common CA Certificates PEM files
 Name:		ca-certificates
-Version:	20120623
+Version:	20121105
 Release:	1
 License:	distributable
 Group:		Libraries
@@ -50,6 +50,7 @@ Patch4:		%{name}-DESTDIR.patch
 Patch5:		%{name}.d.patch
 URL:		http://www.cacert.org/
 BuildRequires:	openssl-tools
+BuildRequires:	openssl-tools-perl
 BuildRequires:	python
 BuildRequires:	python-modules
 BuildRequires:	sed >= 4.0
