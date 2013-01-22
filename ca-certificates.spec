@@ -1,11 +1,11 @@
 Summary:	Common CA Certificates PEM files
 Name:		ca-certificates
-Version:	20121114
+Version:	20130119
 Release:	1
 License:	distributable
 Group:		Libraries
 Source0:	ftp://ftp.debian.org/debian/pool/main/c/ca-certificates/%{name}_%{version}.tar.gz
-# Source0-md5:	3000802ea54fbe3a9b6aaa58428241c3
+# Source0-md5:	1fbbec2028a33cf865b79c204aa2e626
 Source1:	https://www.verisign.com/support/thawte-roots.zip
 # Source1-md5:	21a284ebdc6e8f4178d5cc10fb9e1ef2
 Source2:	http://www.certum.pl/keys/CA.pem
