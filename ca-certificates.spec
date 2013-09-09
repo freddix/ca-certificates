@@ -1,11 +1,11 @@
 Summary:	Common CA Certificates
 Name:		ca-certificates
-Version:	20130610
+Version:	20130906
 Release:	1
 License:	GPL v2 (scripts), MPL v2 (mozilla certs), distributable (other certs)
 Group:		Libraries
 Source0:	ftp://ftp.debian.org/debian/pool/main/c/ca-certificates/%{name}_%{version}.tar.gz
-# Source0-md5:	ca34fb3a5bfb3264062d592c69f1dec6
+# Source0-md5:	67d42b6be21c616a8b7d3d85d95ae912
 Patch0:		%{name}-undebianize.patch
 Patch1:		%{name}-etc-certs.patch
 Patch2:		%{name}-endline.patch
@@ -38,7 +38,7 @@ Requires:	openssl-tools
 Script and data for updating CA Certificates database.
 
 %prep
-%setup -q
+%setup -qn %{name}
 %patch0 -p1
 %patch1 -p1
 %patch2 -p1
