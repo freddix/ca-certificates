@@ -1,7 +1,7 @@
 Summary:	Common CA Certificates
 Name:		ca-certificates
 Version:	20140325
-Release:	7
+Release:	8
 License:	GPL v2 (scripts), MPL v2 (mozilla certs), distributable (other certs)
 Group:		Libraries
 Source0:	ftp://ftp.debian.org/debian/pool/main/c/ca-certificates/%{name}_%{version}.tar.xz
@@ -14,6 +14,7 @@ BuildRequires:	python-modules
 BuildRequires:	sed >= 4.0
 BuildRequires:	unzip
 BuildArch:	noarch
+Requires(post):	findutils
 Requires(post):	openssl-tools-perl
 Requires(post):	run-parts
 Requires:	coreutils
