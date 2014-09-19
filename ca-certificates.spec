@@ -1,16 +1,11 @@
 Summary:	Common CA Certificates
 Name:		ca-certificates
-Version:	20130906
-Release:	1
+Version:	20140325
+Release:	7
 License:	GPL v2 (scripts), MPL v2 (mozilla certs), distributable (other certs)
 Group:		Libraries
-Source0:	ftp://ftp.debian.org/debian/pool/main/c/ca-certificates/%{name}_%{version}.tar.gz
-# Source0-md5:	67d42b6be21c616a8b7d3d85d95ae912
-Patch0:		%{name}-undebianize.patch
-Patch1:		%{name}-etc-certs.patch
-Patch2:		%{name}-endline.patch
-Patch3:		%{name}-DESTDIR.patch
-Patch4:		%{name}.d.patch
+Source0:	ftp://ftp.debian.org/debian/pool/main/c/ca-certificates/%{name}_%{version}.tar.xz
+# Source0-md5:	0436aba482091da310bd762e1deca8b4
 URL:		http://www.cacert.org/
 BuildRequires:	openssl-tools
 BuildRequires:	openssl-tools-perl
@@ -19,45 +14,30 @@ BuildRequires:	python-modules
 BuildRequires:	sed >= 4.0
 BuildRequires:	unzip
 BuildArch:	noarch
+Requires(post):	openssl-tools-perl
+Requires(post):	run-parts
+Requires:	coreutils
+Requires:	openssl-tools
+Obsoletes:	ca-certificates-update
 BuildRoot:	%{tmpdir}/%{name}-%{version}-root-%(id -u -n)
-
-%define		certsdir	/etc/certs
-%define		openssldir	/etc/openssl/certs
 
 %description
 Common CA Certificates.
 
-%package update
-Summary:	Script for updating CA Certificates database
-Group:		Libraries
-Requires:	%{name} = %{version}-%{release}
-Requires:	coreutils
-Requires:	openssl-tools
-
-%description update
-Script and data for updating CA Certificates database.
-
 %prep
 %setup -qn %{name}
-%patch0 -p1
-%patch1 -p1
-%patch2 -p1
-%patch3 -p1
-%patch4 -p1
-
-%{__sed} -i 's,@openssldir@,%{openssldir},' sbin/update-ca-certificates*
 
 %build
-%{__make}
-
-# We have those and more in specific dirs
-%{__rm} mozilla/{Thawte,thawte,Certum,IGC_A,Deutsche_Telekom_Root_CA_2,Juur-SK}*.crt
+%{__make} \
+	SUBDIRS=mozilla
 
 %install
 rm -rf $RPM_BUILD_ROOT
-install -d $RPM_BUILD_ROOT{%{_datadir}/%{name},%{_sbindir},%{certsdir},%{_sysconfdir}/ca-certificates.d}
+install -d $RPM_BUILD_ROOT{%{_datadir}/ca-certificates,%{_sbindir},/etc/{ca-certificates/update.d,ssl/certs}}
+
 %{__make} install \
-	DESTDIR=$RPM_BUILD_ROOT
+	DESTDIR=$RPM_BUILD_ROOT	\
+	SUBDIRS=mozilla
 
 find $RPM_BUILD_ROOT%{_datadir}/ca-certificates -name '*.crt' -exec sed -i -e 's/\r$//' {} \;
 
@@ -66,26 +46,21 @@ cd $RPM_BUILD_ROOT%{_datadir}/ca-certificates
 find . -name '*.crt' | sort | cut -b3-
 ) > $RPM_BUILD_ROOT%{_sysconfdir}/ca-certificates.conf
 
-# build %{certsdir}/ca-certificates.crt
-install -d $RPM_BUILD_ROOT%{openssldir}
-./sbin/update-ca-certificates --destdir $RPM_BUILD_ROOT
-%{__rm} -r $RPM_BUILD_ROOT%{openssldir}
+touch $RPM_BUILD_ROOT/etc/ssl/certs/ca-certificates.crt
 
 %clean
 rm -rf $RPM_BUILD_ROOT
 
-%post update
+%post
 %{_sbindir}/update-ca-certificates --fresh || :
 
 %files
 %defattr(644,root,root,755)
 %doc debian/README.Debian debian/changelog
-%config(noreplace) %verify(not md5 mtime size) %{certsdir}/ca-certificates.crt
-
-%files update
-%defattr(644,root,root,755)
 %attr(755,root,root) %{_sbindir}/update-ca-certificates
 %config(noreplace) %verify(not md5 mtime size) %{_sysconfdir}/ca-certificates.conf
-%dir %{_sysconfdir}/ca-certificates.d
+%ghost /etc/ssl/certs/ca-certificates.crt
+%dir /etc/ca-certificates
+%dir /etc/ca-certificates/update.d
 %{_datadir}/ca-certificates
 
