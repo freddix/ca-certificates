@@ -1,11 +1,11 @@
 Summary:	Common CA Certificates
 Name:		ca-certificates
-Version:	20140927
+Version:	20141019
 Release:	1
 License:	GPL v2 (scripts), MPL v2 (mozilla certs), distributable (other certs)
 Group:		Libraries
 Source0:	ftp://ftp.debian.org/debian/pool/main/c/ca-certificates/%{name}_%{version}.tar.xz
-# Source0-md5:	743b90a08e08f6638d51cc6fdf2f773a
+# Source0-md5:	f619282081c8bfc65ea64c37fa5285ed
 URL:		http://www.cacert.org/
 BuildRequires:	openssl-tools
 BuildRequires:	openssl-tools-perl
